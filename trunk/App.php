@@ -4,18 +4,21 @@
  * Date: 4/26/12
  */
 
-define('APP_ROOT', dirname(dirname($_SERVER['SCRIPT_FILENAME'])). '/');
+define("F_LOCATION", dirname(dirname(__FILE__)) . '/');
+define("APP_ROOT",   dirname(dirname($_SERVER['SCRIPT_FILENAME'])). '/');
 
-define('WWW_ROOT',  APP_ROOT . 'www/');
-define('CODE_ROOT', APP_ROOT . 'code/');
-define('TMPL_ROOT', APP_ROOT . 'tmpl/');
+define("WWW_ROOT",  APP_ROOT . "www/");
+define("CODE_ROOT", APP_ROOT . "code/");
+define("TMPL_ROOT", APP_ROOT . "tmpl/");
 
-define('ROOT_CTRL', 'Ctrl');
+define("ROOT_CTRL", "Ctrl");
 
-include_once "F/Autoload.php";
+include_once(F_LOCATION . "F/Autoload.php");
 
+F_Autoload::instance()->registerPath(F_LOCATION);
 F_Autoload::instance()->registerPath(CODE_ROOT);
 F_Autoload::instance()->registerPath(TMPL_ROOT);
+
  
 class F_App {
 

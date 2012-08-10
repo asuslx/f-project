@@ -11,7 +11,6 @@ class F_Autoload {
     private $paths = array();
 
     protected function __construct() {
-
         $this -> paths = array();
         spl_autoload_register('self::autoload', true);
     }
@@ -61,6 +60,7 @@ class F_Autoload {
         } else {
 
             foreach(self::instance()->paths as $path) {
+
                 if(file_exists($path . $file)) {
                     require_once ($path . $file);
                     break;
@@ -70,5 +70,3 @@ class F_Autoload {
     }
 
 }
-
-F_Autoload::instance();
