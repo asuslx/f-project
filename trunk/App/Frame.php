@@ -4,14 +4,29 @@
  * Date: 4/26/12
  */
  
-abstract class F_App_Frame {
+class F_App_Frame {
 
-    protected function _assign() {
+    private $_template;
 
+    public function __construct() {
+
+        $file = APP_ROOT . 'tmpl/' . str_replace('_', '/', get_class($this)) . '.html';
+        $this->_template = $this->getTemplate($file);
+    }
+
+    protected function _assign($name, $value) {
+
+        $this->_template->assign($name, $value);
+    }
+
+    protected function getTemplate($file) {
+
+        return new F_App_Template_Native($file);
     }
 
     public function run() {
-        return "lala {controller}";
+
+        return $this->_template->parse();
     }
 
 }
