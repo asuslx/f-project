@@ -55,14 +55,15 @@ class F_Autoload {
         $file = str_replace(self::$delimiter, '/', $class) . '.php';
 
         if(self::_fileExists($file)) {
-            require_once ($file);
+            include_once ($file);
+
 
         } else {
 
             foreach(self::instance()->paths as $path) {
 
                 if(file_exists($path . $file)) {
-                    require_once ($path . $file);
+                    include_once ($path . $file);
                     break;
                 }
             }
