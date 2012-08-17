@@ -33,16 +33,13 @@ class F_App {
         return self::$_instance;
     }
 
-    private $_request;
-
-    protected function __construct() {
-
-        $this->_request = new F_App_Request();
-    }
+    private $_callInfo;
 
     private function _getCallInfo() {
 
-        $path = ROOT_CTRL.'/'. trim($this->_request->getPath(),'/');
+        $request = new F_App_Request();
+
+        $path = ROOT_CTRL.'/'. trim($request->getPath(),'/');
         $path = trim($path, '/');
         $path = explode('/',$path);
         
@@ -73,19 +70,25 @@ class F_App {
             }
         }
 
-        return new F_App_CallInfo($existedClass, $action, $this->_request);
+        return new F_App_CallInfo($existedClass, $action, $request);
+    }
+
+    public function getCallInfo() {
+
+        return $this->_callInfo;
     }
 
     public function run() {
 
-        $callInfo = $this->_getCallInfo();
+        $this->_callInfo = $this->_getCallInfo();
 
-        $class = $callInfo->getClass();
-        $action = $callInfo->getAction();
-        $request = $callInfo->getRequest();
+        $class = $this->_callInfo->getClass();
+        $action = $this->_callInfo->getAction();
+        $request = $this->_callInfo->getRequest();
+
         $ctrl = new $class();
-        echo $ctrl->runAction($action, $request);
 
+        echo $ctrl->runAction($action, $request);
     }
 
 }
