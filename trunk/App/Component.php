@@ -16,6 +16,7 @@ abstract class F_App_Component {
 
     protected function _assign($name, $value) {
 
+        if($value instanceof F_App_Component) $value = $value->run();
         $this->_template->assign($name, $value);
     }
 
