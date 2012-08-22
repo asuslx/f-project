@@ -102,6 +102,7 @@ abstract class F_App_Controller {
 
             if($this->_template instanceof F_App_Template) {
 
+                if($value instanceof F_App_Component) $value = $value->run();
                 $this->_template->assign($name, $value);
 
             } else throw new F_App_Exception_Controller("Template tremplate for controller ".get_class($this)." must be instance of F_App_Template!");
