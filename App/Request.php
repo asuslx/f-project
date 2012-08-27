@@ -99,6 +99,12 @@ class F_App_Request {
                 $value = (float) $value;
                 break;
 
+            case 'BOOL':
+            case 'BOOLEAN':
+                $value = (bool) $value;
+                break;
+
+
             default: throw new F_App_Exception_Request("Invalid type requested \"$type\"!");
         }
 
