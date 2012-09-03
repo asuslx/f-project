@@ -27,14 +27,7 @@ class F_App_Template_Native extends F_App_Template {
         $content = '';
         if(isset($_GET['_trace']) && $_GET['_trace'] == 'tmpl') {
 
-            ob_start();
-            $_b = "<pre style=\"position:relative; border: 1px solid #000; height: 9em; overflow: auto; margin: 0.5em; background-color:white; color:black;\">";
-            $_e = "</pre>";
-                var_dump($this->_fileName);
-                var_dump($this->_data);
-            $content .= ob_get_contents();
-            $content = $_b. htmlspecialchars($content,  ENT_SUBSTITUTE, 'cp1251'). $_e;
-            ob_end_clean();
+            $content .= "<table style=\"border: 2px solid green; margin: 2px;\"><tr><tr><td style=\"border: 1px solid blue; color: red;\">".$this->_fileName."</td></tr><td>";
 
         }
         
@@ -43,6 +36,10 @@ class F_App_Template_Native extends F_App_Template {
         include ($this->_fileName);
         $content .= ob_get_contents();
         ob_end_clean();
+
+        if(isset($_GET['_trace']) && $_GET['_trace'] == 'tmpl') {
+            $content .= "</td></tr></table>";
+        }
 
         return $content;
     }
