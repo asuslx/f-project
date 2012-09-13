@@ -7,6 +7,7 @@
 abstract class F_App_Component {
 
     private $_template;
+    private $_templateVars = array();
 
     public function __construct() {
 
@@ -16,8 +17,7 @@ abstract class F_App_Component {
 
     protected function _assign($name, $value) {
 
-        if($value instanceof F_App_Component) $value = $value->run();
-        $this->_template->assign($name, $value);
+        $this->_templateVars[$name] = $value;
     }
 
     protected function getTemplate($file) {
@@ -30,6 +30,12 @@ abstract class F_App_Component {
     public function run() {
 
         $this->_run();
+
+        foreach($this->_templateVars as $_n => $_v) {
+            if($_v instanceof F_App_Component) $_v = $_v->run();
+            $this->_template->assign($_n, $_v);
+        }
+
         return $this->_template->parse();
     }
 

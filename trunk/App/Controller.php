@@ -8,7 +8,9 @@ abstract class F_App_Controller {
 
     protected $params = array();
     protected $frame = null;
+
     private $_template;
+    private $_templateVars = array();
 
     public function __construct () {
 
@@ -72,6 +74,20 @@ abstract class F_App_Controller {
             $this->onException($e);
         }
 
+        if($this->_template) {
+
+            if($this->_template instanceof F_App_Template) {
+
+                foreach($this->_templateVars as $_n => $_v) {
+                    if($_v instanceof F_App_Component) $_v = $_v->run();
+                    $this->_template->assign($_n, $_v);
+                }
+
+            } else throw new F_App_Exception_Controller("Template tremplate for controller ".get_class($this)." must be instance of F_App_Template!");
+
+        } else throw new F_App_Exception_Controller("Undefined tremplate for controller ".get_class($this)."!");
+
+
         $html =  $this->_template->parse();
 
         if ($this->frame) {
@@ -98,16 +114,7 @@ abstract class F_App_Controller {
 
     protected function _assign($name, $value) {
 
-        if($this->_template) {
-
-            if($this->_template instanceof F_App_Template) {
-
-                if($value instanceof F_App_Component) $value = $value->run();
-                $this->_template->assign($name, $value);
-
-            } else throw new F_App_Exception_Controller("Template tremplate for controller ".get_class($this)." must be instance of F_App_Template!");
-
-        } else throw new F_App_Exception_Controller("Undefined tremplate for controller ".get_class($this)."!");
+        $this->_templateVars[$name] = $value;
     }
 
 }
