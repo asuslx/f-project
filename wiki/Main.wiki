@@ -1,0 +1,35 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+F is a fast, simple php MVC framework.
+It may be used for develop advanced web applications.
+It is light and easy to use.
+It's KISS.
+
+
+= Deploy new App =
+
+It is in few simple steps.
+
+  * Download and extract f-skeleton.tar.gz
+  * Rename f-skeleton directory as u wish (it's your new project)
+  * make web server settings (app root is "www" subdirectory)
+Apache example:
+
+<code>
+<VirtualHost *:80>
+    DocumentRoot "/webhome/myapp/www"
+    ServerName myapp.local
+    ServerAlias www.myapp.local
+</VirtualHost>
+</code>
+  * checkout F and place it as u wish. Recently in php include path or near project directory
+  * make sure that application use correct F location (in myapp/www/index.php)
+<code>
+ include_once "../../F/App.php";
+ include_once "../cfg/main.php";
+
+  F_App::instance()->run();</code>
+
+ * Run F app http:://myapp.local in this case
