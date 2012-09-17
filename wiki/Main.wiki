@@ -24,7 +24,10 @@ Apache example:
     ServerAlias www.myapp.local
 </VirtualHost>
 </code>
-  * checkout F and place it as u wish. Recently in php include path or near project directory
+  * checkout F and place it as u wish. Recently in php include path or near project directory. Directory must be named "F".
+<code>
+svn checkout http://f-project.googlecode.com/svn/trunk/ F
+</code>
   * make sure that application use correct F location (in myapp/www/index.php)
 <code>
  include_once "../../F/App.php";
