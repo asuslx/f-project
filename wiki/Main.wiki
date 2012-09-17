@@ -12,7 +12,7 @@ It's KISS.
 
 It is in few simple steps.
 
-  * Download and extract f-skeleton.tar.gz
+  * Download and extract [http://code.google.com/p/f-project/downloads/detail?name=f-skeleton.tar.gz]
   * Rename f-skeleton directory as u wish (it's your new project)
   * make web server settings (app root is "www" subdirectory)
 Apache example:
