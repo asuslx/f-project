@@ -18,6 +18,10 @@ class F_DB_Driver_MYSQL extends  F_DB_Driver {
             throw new F_DB_Exception("Unable to select db!");
         }
 
+        if(!mysql_query("SET NAMES 'utf8'")) {
+            throw new F_DB_Exception("Unable to set character encoding!");
+        }
+
         return true;
     }
 
