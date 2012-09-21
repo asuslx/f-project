@@ -22,6 +22,8 @@ F_Autoload::instance()->registerPath(TMPL_ROOT);
  
 class F_App {
 
+    private $_callInfo;
+
     private static $_instance;
 
     public static function instance() {
@@ -33,16 +35,14 @@ class F_App {
         return self::$_instance;
     }
 
-    private $_callInfo;
-
-    private function _getCallInfo() {
+    public function __construct() {
 
         $request = new F_App_Request();
 
         $path = ROOT_CTRL.'/'. trim($request->getPath(),'/');
         $path = trim($path, '/');
         $path = explode('/',$path);
-        
+
 
         $controllerClass = '';
         $action = 'Index';
@@ -64,13 +64,14 @@ class F_App {
                     $action = ucfirst(end($_));
                 }
                 break;
-                
+
             } else {
                 $prev = $controllerClass;
             }
         }
 
-        return new F_App_CallInfo($existedClass, $action, $request);
+        $this->_callInfo = new F_App_CallInfo($existedClass, $action, $request);
+
     }
 
     public function getCallInfo() {
@@ -78,9 +79,17 @@ class F_App {
         return $this->_callInfo;
     }
 
-    public function run() {
+    public function isAdminMode() {
 
-        $this->_callInfo = $this->_getCallInfo();
+        $domain = $this->_callInfo->getRequest()->getHost();
+        $parts = explode('.', $domain);
+        $check = 0;
+        if(strtolower($parts[0]) == 'www') $check++;
+
+        return (strtolower($parts[$check]) == 'admin');
+    }
+
+    public function run() {
 
         $class = $this->_callInfo->getClass();
         $action = $this->_callInfo->getAction();

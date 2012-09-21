@@ -6,6 +6,7 @@
  
 class F_App_Request {
 
+    private $_host;
     private $_path;
     private $_sourceData;
 
@@ -21,6 +22,7 @@ class F_App_Request {
         if($len) {
             $this->_path = substr(strtolower($_SERVER['REQUEST_URI']), 0, $len);
         }
+        $this->_host = $_SERVER['HTTP_HOST'];
     }
 
     public function setSource($name, $data) {
@@ -28,6 +30,10 @@ class F_App_Request {
         $this->_sourceData[self::_weakName($name)] = $data;
     }
 
+    public function getHost() {
+
+        return $this->_host;
+    }
 
     public function getPath() {
 
