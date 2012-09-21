@@ -91,6 +91,8 @@ class F_App {
 
     public function run() {
 
+        ini_set( 'default_charset', 'UTF-8');
+
         $class = $this->_callInfo->getClass();
         $action = $this->_callInfo->getAction();
         $request = $this->_callInfo->getRequest();
