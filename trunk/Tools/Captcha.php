@@ -74,7 +74,10 @@ class F_Tools_Captcha {
     }
 
     public static function check($code) {
-        return $code == $_SESSION['f_tools_captcha'];
+        
+        $result = $code == $_SESSION['f_tools_captcha'];
+        $_SESSION['f_tools_captcha'] = self::password(25);
+        return $result;
     }
 
 }
