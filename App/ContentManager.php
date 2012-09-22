@@ -28,15 +28,15 @@ class F_App_ContentManager {
             if(!empty($content)) {
 
                 if(!F_DB::exec("UPDATE f_app_content SET content = '%s' where name='%s'",
-                               mysql_real_escape_string($_REQUEST['content']),
-                               mysql_real_escape_string($_REQUEST['name']))) {
+                               $_REQUEST['content'],
+                               $_REQUEST['name'])) {
                     throw new F_App_Exception(F_DB::getLastError());
                 }
 
             } else {
                 if(!F_DB::exec("INSERT INTO f_app_content (name, content) values ('%s', '%s')",
-                               mysql_real_escape_string($_REQUEST['name']),
-                               mysql_real_escape_string($_REQUEST['content'])))
+                               $_REQUEST['name'],
+                               $_REQUEST['content']))
                     throw new F_App_Exception(F_DB::getLastError());
             }
         }

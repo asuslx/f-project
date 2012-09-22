@@ -22,7 +22,7 @@ class F_DB {
             $sql = self::_formatQuery(func_get_args());
         }
         if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
-            echo $sql.'<br/>';
+            echo '<div>'.$sql.'</div>';
         }
 
         return self::$_driver -> exec($sql);
@@ -34,7 +34,7 @@ class F_DB {
             $sql = self::_formatQuery(func_get_args());
         }
         if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
-            echo $sql.'<br/>';
+            echo '<div>'.$sql.'</div>';
         }
 
         return self::$_driver -> fetch($sql);
@@ -46,7 +46,7 @@ class F_DB {
             $sql = self::_formatQuery(func_get_args());
         }
         if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
-            echo $sql.'<br/>';
+            echo '<div>'.$sql.'</div>';
         }
 
         return self::$_driver -> query($sql);
