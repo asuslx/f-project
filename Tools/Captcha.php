@@ -14,7 +14,7 @@ class F_Tools_Captcha {
 
     public function __construct($font, $image, $length = 5) {
 
-        if(empty($_SESSION)) {
+        if(!isset($_SESSION)) {
             throw new F_App_Exception("Session must be started before using F_Tools_Captcha.");
         }
 
