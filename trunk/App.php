@@ -89,9 +89,23 @@ class F_App {
         return (strtolower($parts[$check]) == 'admin');
     }
 
+    protected function checkAdminAccess($login, $password) {
+        return false;
+    }
+
     public function run() {
 
         ini_set( 'default_charset', 'UTF-8');
+
+        if($this->isAdminMode()) {
+            if (!isset($_SERVER['PHP_AUTH_USER']) || !$this->checkAdminAccess($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+
+                header('WWW-Authenticate: Basic realm="F application admin"');
+                header('HTTP/1.0 401 Unauthorized');
+                echo "Athentication required for admin access!";
+                exit;
+            }
+        }
 
         $class = $this->_callInfo->getClass();
         $action = $this->_callInfo->getAction();
