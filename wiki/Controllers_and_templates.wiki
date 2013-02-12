@@ -51,3 +51,39 @@ For controller below we need to create two template files:
 
  *  *<project dir>/tmpl/Ctrl/Index.html* 
  *  *<project dir>/tmpl/Ctrl/Second.html* 
+
+We can transfer data from controller to it's template,  and show it templated.
+
+By default *F Application* use *F_App_Template_Native* class.
+
+In *F* template objects for controllers creating by system, and we does not need access them directly.
+
+For assigning template variables we must use *{{{ _assign() }}}* protected method of controller:
+
+{{{
+class Ctrl extends F_App_Controller {
+
+    ...
+
+    function actionIndex($params) {
+        
+       // some code defining $var1 and $var2
+       $this->_assign("first", $var1);
+       $this->_assign("second", $var2);
+
+    }
+
+    ...
+}
+}}}
+
+And when we can use this variables in template *<project dir>/tmpl/Ctrl/Index.html*:
+
+{{{
+<html>
+<body>
+<h1><?=$first?></h1>
+<h2><?=$second?></h2>
+</body>
+</html>
+}}}
