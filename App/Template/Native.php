@@ -25,20 +25,15 @@ class F_App_Template_Native extends F_App_Template {
     public function parse() {
 
         $__tmpl__content = '';
-        if(isset($_GET['_trace']) && $_GET['_trace'] == 'tmpl') {
-
-            $__tmpl__content .= "<table style=\"border: 2px solid green; margin: 2px;\"><tr><tr><td style=\"border: 1px solid blue; color: red;\">".$this->_fileName."</td></tr><td>";
-
-        }
         
         ob_start();
-        extract($this->_data);
-        include ($this->_fileName);
-        $__tmpl__content .= ob_get_contents();
+            extract($this->_data);
+            include ($this->_fileName);
+            $__tmpl__content .= ob_get_contents();
         ob_end_clean();
 
         if(isset($_GET['_trace']) && $_GET['_trace'] == 'tmpl') {
-            $__tmpl__content .= "</td></tr></table>";
+            $__tmpl__content = '<a href="#" title="'.$this->_fileName.'">[ tmpl ]</a><br/>' . $__tmpl__content ;
         }
 
         return $__tmpl__content;
