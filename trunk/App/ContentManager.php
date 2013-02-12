@@ -24,25 +24,23 @@ class F_App_ContentManager {
         if((isset($_REQUEST['f_app_edit_tile']) && $_REQUEST['f_app_edit_tile'] == 'edit')) {
 
             $content = F_DB::fetch("SELECT content FROM f_app_content where name = '%s'", $name);
-            if($content === false) throw new F_App_Exception(F_DB::getLastError());
+
             if(!empty($content)) {
 
-                if(!F_DB::exec("UPDATE f_app_content SET content = '%s' where name='%s'",
+                F_DB::exec("UPDATE f_app_content SET content = '%s' where name='%s'",
                                $_REQUEST['content'],
-                               $_REQUEST['name'])) {
-                    throw new F_App_Exception(F_DB::getLastError());
-                }
+                               $_REQUEST['name']);
 
             } else {
-                if(!F_DB::exec("INSERT INTO f_app_content (name, content) values ('%s', '%s')",
+                F_DB::exec("INSERT INTO f_app_content (name, content) values ('%s', '%s')",
                                $_REQUEST['name'],
-                               $_REQUEST['content']))
-                    throw new F_App_Exception(F_DB::getLastError());
+                               $_REQUEST['content']);
+
             }
         }
 
         $content = F_DB::fetch("SELECT content FROM f_app_content where name = '%s'", $name);
-        if($content === false) throw new F_App_Exception(F_DB::getLastError());
+
         if(!empty($content)) {
             $content = $content[0]['content'];
         } else  {

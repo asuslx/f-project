@@ -13,7 +13,18 @@ class F_DB {
     public static function initialize(F_DB_Driver $d, $host, $login, $password, $dbname) {
 
         self::$_driver = $d;
-        return self::$_driver->initialize($host, $login, $password, $dbname);
+        $timeStart = microtime(true);
+        $result = self::$_driver->initialize($host, $login, $password, $dbname);
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
+        if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
+           trigger_error("Connect to DB time: {$time} sec.", E_USER_NOTICE);
+        }
+
+         if($result === false) {
+            trigger_error("DB Error: ".self::$_driver->getLastError());
+        }
+        return $result;
     }
 
     public static function exec($sql) {
@@ -21,11 +32,19 @@ class F_DB {
         if(func_num_args() > 1) {
             $sql = self::_formatQuery(func_get_args());
         }
+        $timeStart = microtime(true);
+        $result = self::$_driver -> exec($sql);
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
+
         if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
-            echo '<div>'.$sql.'</div>';
+           trigger_error("SQL: {$sql} | Time: {$time} sec.", E_USER_NOTICE);
         }
 
-        return self::$_driver -> exec($sql);
+        if($result === false) {
+            trigger_error("DB Error: ".self::$_driver->getLastError(). " SQL: ". $sql. " Time: ".$time, E_USER_ERROR);
+        }
+        return $result;
     }
 
     public static  function fetch($sql) {
@@ -33,11 +52,20 @@ class F_DB {
         if(func_num_args() > 1) {
             $sql = self::_formatQuery(func_get_args());
         }
+       
+        $timeStart = microtime(true);
+        $result = self::$_driver -> fetch($sql);
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
         if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
-            echo '<div>'.$sql.'</div>';
+           trigger_error("SQL: {$sql} | Time: {$time} sec.", E_USER_NOTICE);
         }
 
-        return self::$_driver -> fetch($sql);
+        if($result === false) {
+            trigger_error("DB Error: ".self::$_driver->getLastError(). " SQL: ". $sql. " Time: ".$time, E_USER_ERROR);
+        }
+        return $result;
+
     }
 
     public static  function query($sql) {
@@ -45,11 +73,21 @@ class F_DB {
         if(func_num_args() > 1) {
             $sql = self::_formatQuery(func_get_args());
         }
+        
+        $timeStart = microtime(true);
+        $result = self::$_driver -> query($sql);
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
+
         if(!empty($_GET['_trace']) && $_GET['_trace']=='db') {
-            echo '<div>'.$sql.'</div>';
+           trigger_error("SQL: {$sql} | Time: {$time} sec.", E_USER_NOTICE);
         }
 
-        return self::$_driver -> query($sql);
+        if($result === false) {
+            trigger_error("DB Error: ".self::$_driver->getLastError(). " SQL: ". $sql. " Time: ".$time, E_USER_ERROR);
+        }
+        return $result;
+
     }
 
     public static  function next($qry) {

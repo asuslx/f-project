@@ -11,15 +11,15 @@ class F_DB_Driver_MYSQL extends  F_DB_Driver {
     public function initialize($host, $login, $password, $dbname) {
 
         if(!mysql_connect($host, $login, $password)) {
-            throw new F_DB_Exception("Unable to connect!");
+            return false;
         }
 
         if(!mysql_select_db($dbname)) {
-            throw new F_DB_Exception("Unable to select db!");
+            return false;
         }
 
         if(!mysql_set_charset('utf8')) {
-            throw new F_DB_Exception("Unable to set character encoding!");
+            return false;
         }
 
         return true;
