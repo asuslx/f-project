@@ -87,3 +87,7 @@ And when we can use this variables in template *<project dir>/tmpl/Ctrl/Index.ht
 </body>
 </html>
 }}}
+
+= Using request parameters = 
+
+It is *strictly not recomended* using in *F* application global variables such us *{{{$_GET $_POST $_SESSION}}}* directly.
