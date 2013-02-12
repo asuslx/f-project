@@ -1,0 +1,53 @@
+= Introduction =
+
+Every MVC web-application work with controllers.
+
+In *"F"* Controllers implemented by class *F_App_Controller*.
+
+Every request to a *"F"* web application processed by one of it's controller.
+
+By default *main controller* located in *<project dir>/code/Ctrl.php*
+
+= Processing requests =
+
+Every controller must implement abstact method *{{{_initialize()}}}* and one or more *actions*. 
+Action must be named strictly, depend on processing URL.
+
+For example we create apprication what can process two URLs:
+
+ * http://test.local/
+ * http://test.local/second/
+
+in code/Ctrl.php we shoud write:
+{{{
+class Ctrl extends F_App_Controller {
+
+    protected $params = array();
+
+    function _initialize() {
+        // called before any action processed
+    }
+
+    function actionIndex($params) {
+        // called when http://test.local/
+    }
+
+    function actionSecond($params) {
+        // called when http://test.local/second
+    }
+}
+
+}}}
+
+= Controller templates =
+
+Every controller *must have templates for every* it's action.
+
+If we does not need in template we can use empty templates.
+
+Templates for controlles locates by default in *<project dir>/tmpl/* directory.
+
+For controller below we need to create two template files:
+
+ *  *<project dir>/tmpl/Ctrl/Index.html* 
+ *  *<project dir>/tmpl/Ctrl/Second.html* 
