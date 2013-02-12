@@ -125,9 +125,9 @@ If reqest parameter is *strict* default value ignored for this parameter.
 
 If parameter is not *strict* we can define default values for it.
 
-All parameters will be converteed to its type, before strict and default validation.
+All parameters will be converteed to its *type*, before strict and default validation.
 
-Supported types:
+Supported *types*:
  
  * string (str)
  * integer (int)
