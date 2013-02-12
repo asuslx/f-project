@@ -168,4 +168,4 @@ For example:
 }
 
 }}}
-Will be wait 'param1' only from url  *http://test.local/?param1=...* but if param1 in $_POST it will be ignored.
+Will be wait *param1* only from url  * http://test.local/?param1=... * but if *param1* in *POST* data of request it will be ignored.
