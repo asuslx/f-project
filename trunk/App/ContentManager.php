@@ -69,7 +69,7 @@ class F_App_ContentManager {
     }
 
     private static function _editForm($name, $content) {
-        $out = '<form method="POST" action="?"><input type="hidden" name="name" value="'.$name.'"/><textarea name="content" rows="10" style="width:100%">';
+        $out = '<form method="POST" action="?"><input type="hidden" name="name" value="'.$name.'"/><textarea name="content" rows="7" style="width:100%">';
         $out .= $content;
         $out .= '</textarea><input type="submit" name="f_app_edit_tile" value="edit"/></form>';
         return $out;
