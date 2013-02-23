@@ -34,9 +34,10 @@ class F_Debugger {
     }
 
     public static function __shutdown() {
+        require_once(dirname(__FILE__).'/Debugger/Message.php');
+             
+        if(!is_null($error = error_get_last())) {
 
-        $error = error_get_last();
-        if($error) {
             self::instance()->_handle($error['type'], $error['message'], $error['file'], $error['line'], array());
         }
     }
@@ -44,9 +45,11 @@ class F_Debugger {
     private function _handle($errno, $errmsg, $filename, $linenum, $vars) {
 
         $handled = false;
+        
         foreach($this->_streams as $_) {
-
-            if($errno & $_['type']) {
+            
+            if(($errno & $_['type'])) {
+                
                 $_['stream'] ->put(new F_Debugger_Message($errno, $errmsg, $filename, $linenum, $vars));
                 $handled = true;
             }
