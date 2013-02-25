@@ -20,6 +20,29 @@ class F_Tools_Icache {
         $this->source = $source;
     }
 
+    private function _imageResize($ext, $image, $width, $height){
+        // Get original size of image
+        $image = imagecreatefromstring($image);
+
+        // Create new image using thumbnail sizes
+        $thumb = imagecreatetruecolor($width,$height);
+
+        // Copy original image to thumbnail
+        imagecopyresampled($thumb,$image,0,0,0,0,$width,$height,imagesx($image),imagesy($image));
+        ob_start();
+            switch($ext){
+                case 'bmp': imagewbmp($thumb); break;
+                case 'gif': imagegif($thumb); break;
+                case 'jpg': imagejpeg($thumb); break;
+                case 'png': imagepng($thumb); break;
+            }
+            $thumb = ob_get_contents(); // read from buffer
+        ob_end_clean(); // delete buffer
+
+        return $thumb;
+
+    }
+
     public function outImage($resourceId) {
 
         $parts = explode('.', $resourceId);
@@ -37,7 +60,17 @@ class F_Tools_Icache {
         $sourceResourceId = reset($parts) . '.' .end($parts);
 
         $resource = $this->source->get($sourceResourceId);
-        if($resource) $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resource);
+
+        $result = false;
+        $resized = $resource;
+        if($resource) {
+            if(($width != ICACHE_WIDTH_FULL) && ($height != ICACHE_HEIGHT_FULL)) {
+
+                $resized = $this->_imageResize(end($parts), $resource, $width, $height);
+              
+            }
+            $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resized);
+        }
         if($result) {
             header('Location: /icache/'. $resourceId);
         }
