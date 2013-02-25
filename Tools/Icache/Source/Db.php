@@ -7,13 +7,38 @@
  
 class F_Tools_Icache_Source_Db extends F_Tools_Icache_Source {
 
-    public function get($resourceId, $width = ICACHE_WIDTH_FULL, $height = ICACHE_HEIGHT_FULL, $quality = ICACHE_QUALITU_FULL) {
-        return $resourceId . '  - (' . $width . '_' .
-        $height . '_' .
-        $quality . ')';
+    protected $tableName;
+    protected $idField;
+    protected $extField;
+    protected $imageField;
+
+    public function __construct($tableName, $idField, $extField, $imageField) {
+
+        $this->tableName = $tableName;
+        $this->idField = $idField;
+        $this->extField = $extField;
+        $this->imageField = $imageField;
+    }
+
+    public function get($resourceId) {
+
+        list($id, $ext) = explode('.', $resourceId);
+         $rows = F_DB::fetch("select {$this->imageField} from {$this->tableName} where {$this->idField} = %d", $id);
+        return $rows[0][$this->imageField];
+
     }
 
     public function put($resource, $resourceId) {
+       
+        list($id, $ext) = explode('.', $resourceId);
+
+        return F_DB::exec(
+           "update {$this->tableName}
+            set {$this->imageField}='".mysql_real_escape_string($resource)."',
+                {$this->extField}='{$ext}'
+            where {$this->idField}={$id}"
+        );
+
 
     }
 

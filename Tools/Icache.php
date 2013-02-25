@@ -4,6 +4,10 @@
  * Date: 20.02.13
  * Time: 11:31
  */
+
+const ICACHE_WIDTH_FULL = -1;
+const ICACHE_HEIGHT_FULL = -1;
+const ICACHE_QUALITU_FULL = 100;
  
 class F_Tools_Icache {
 
@@ -32,15 +36,15 @@ class F_Tools_Icache {
 
         $sourceResourceId = reset($parts) . '.' .end($parts);
 
-        $resource = $this->source->get($sourceResourceId, $width, $height, $quality);
-
-        $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resource);
+        $resource = $this->source->get($sourceResourceId);
+        if($resource) $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resource);
         if($result) {
-            header('Location: /icache/'.$resourceId);
+            header('Location: /icache/'. $resourceId);
         }
     }
 
-    public function putImage($resource, $resourceId) {
-        //
+    public function putImage($resourceId, $resource) {
+
+        return $this->source->put($resource, $resourceId);
     }
 }

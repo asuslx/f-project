@@ -5,6 +5,7 @@
  * Time: 14:08
  */
  
-class F_Tools_Uploader_Storage {
+abstract class F_Tools_Uploader_Storage {
 
+    public abstract function save($fileName, $toName);
 }
