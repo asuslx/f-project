@@ -72,7 +72,8 @@ class F_Tools_Icache {
             $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resized);
         }
         if($result) {
-            header('Location: /icache/'. $resourceId);
+           
+            header('Location: '.$this->config->getCacheDir(). $resourceId);
         }
     }
 

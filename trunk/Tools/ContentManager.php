@@ -15,6 +15,13 @@
     name varchar( 255 ) UNIQUE ,
     content longtext
    );
+
+   CREATE TABLE f_app_content_images(
+    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+    name VARCHAR( 255 ) ,
+    body MEDIUMBLOB,
+    ext VARCHAR( 10 )
+   );
 */
 
 class F_Tools_ContentManager {
@@ -80,4 +87,32 @@ class F_Tools_ContentManager {
         return (isset($_REQUEST['f_app_edit_tile']) && $_REQUEST['f_app_edit_tile'] == $name);
     }
 
+    public static function getImagesCount() {
+
+        $row = F_DB::fetch('select count(*) as cnt from f_app_content_images');
+        return $row[0]['cnt'];
+    }
+
+    public static function getImages($offset = 0, $limit = 30, $urlPrefix = '/icache/content_images/', $width = -1, $height = -1) {
+        $rows = F_DB::fetch("select id, name, ext from f_app_content_images limit %d, %d", $offset, $limit);
+        foreach($rows as &$row) {
+            $size = '';
+            if($width > 0 && $height > 0) {
+                $size = '.'.$width.'_'.$height.'_100.';
+            }
+
+            $row['url'] = $urlPrefix .$row['id'].$size.'.'.$row['ext'];
+        }
+        return $rows;
+    }
+
+    public static function addImage($name, $body, $ext) {
+
+        return F_DB::exec("insert into f_app_content_images (name, body, ext) values ('%s','%s','%s')", $name, $body, $ext);
+    }
+
+    public static function deleteImage($id) {
+
+        return F_DB::exec("delete from f_app_content_images where id=%d", $id);
+    }
 }
