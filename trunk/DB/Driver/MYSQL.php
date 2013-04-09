@@ -54,6 +54,22 @@ class F_DB_Driver_MYSQL extends  F_DB_Driver {
         return mysql_query($sql);
     }
 
+    public function lastId() {
+
+        return mysql_insert_id();
+    }
+
+    public function transStart() {
+        return mysql_query("START TRANSACTION");
+    }
+
+    public function transCommit() {
+        return mysql_query("COMMIT");
+    }
+
+    public  function transRorrback() {
+        return mysql_query("ROLLBACK");
+    }
     // last error
     public function getLastError() {
 

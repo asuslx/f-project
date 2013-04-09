@@ -13,5 +13,9 @@ abstract class F_DB_Driver {
     public abstract function fetch($sql);
     public abstract function query($sql);
     public abstract function next($qry);
+    public abstract function lastId();
+    public abstract function transStart();
+    public abstract function transCommit();
+    public abstract function transRorrback();
     public abstract function getLastError();
 }

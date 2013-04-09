@@ -100,6 +100,21 @@ class F_DB {
         return self::$_driver -> getLastError();
     }
 
+    public static function lastId() {
+        return self::$_driver -> lastId();
+    }
+
+    public static function transStart() {
+        return self::$_driver ->transStart();
+    }
+
+    public static function transCommit() {
+        return self::$_driver ->transCommit();
+    }
+
+    public static function transRorrback() {
+        return self::$_driver ->Rorrbacktrans();
+    }
 
     private static function _formatQuery($args) {
 
