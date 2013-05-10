@@ -27,8 +27,22 @@ class F_Tools_Icache {
         // Create new image using thumbnail sizes
         $thumb = imagecreatetruecolor($width,$height);
 
+
+        $srcw = imagesx($image);
+        $srch = imagesy($image);
+
+
+
+        if($width > $height) {
+            $correction = $height / $width;
+            $srch = $srch * $correction;
+        } else {
+            $correction =  $width / $height;
+            $srcw = $srcw * $correction;
+        }
+
         // Copy original image to thumbnail
-        imagecopyresampled($thumb,$image,0,0,0,0,$width,$height,imagesx($image),imagesy($image));
+        imagecopyresized($thumb,$image,0,0,0,0,$width,$height,$srcw,$srch);
         ob_start();
             switch($ext){
                 case 'bmp': imagewbmp($thumb); break;
@@ -42,6 +56,7 @@ class F_Tools_Icache {
         return $thumb;
 
     }
+
 
     public function outImage($resourceId) {
 
@@ -73,7 +88,7 @@ class F_Tools_Icache {
         }
         if($result) {
            
-            header('Location: '.$this->config->getCacheDir(). $resourceId);
+            header('Location: '. str_replace(WWW_ROOT,"",$this->config->getCacheDir()). $resourceId);
         }
     }
 
