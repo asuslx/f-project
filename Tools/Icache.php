@@ -33,14 +33,15 @@ class F_Tools_Icache {
 
 
 
-        if($width > $height) {
-            $correction = $height / $width;
-            $srch = $srch * $correction;
-        } else {
-            $correction =  $width / $height;
+        if($srcw > $srch) {
+            $correction = $srch / $srcw;
             $srcw = $srcw * $correction;
+        } else {
+            $correction =  $srcw / $srch;
+            $srch = $srch * $correction;
         }
 
+       
         // Copy original image to thumbnail
         imagecopyresized($thumb,$image,0,0,0,0,$width,$height,$srcw,$srch);
         ob_start();
