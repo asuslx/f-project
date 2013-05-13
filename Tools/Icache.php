@@ -33,12 +33,10 @@ class F_Tools_Icache {
 
 
 
-        if($srcw > $srch) {
-            $correction = $srch / $srcw;
-            $srcw = $srcw * $correction;
+        if($srcw < $srch) {
+            $srch = $srcw *  $height / $width;
         } else {
-            $correction =  $srcw / $srch;
-            $srch = $srch * $correction;
+            $srcw = $srch * $height / $width;
         }
 
        
