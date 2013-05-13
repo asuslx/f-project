@@ -20,7 +20,7 @@ class F_Tools_Icache {
         $this->source = $source;
     }
 
-    private function _imageResize($ext, $image, $width, $height){
+    private function _imageResize($ext, $image, $width, $height, $quality = 100){
         // Get original size of image
         $image = imagecreatefromstring($image);
 
@@ -41,13 +41,20 @@ class F_Tools_Icache {
 
        
         // Copy original image to thumbnail
-        imagecopyresized($thumb,$image,0,0,0,0,$width,$height,$srcw,$srch);
+        imagecopyresampled($thumb,$image,0,0,0,0,$width,$height,$srcw,$srch);
         ob_start();
             switch($ext){
-                case 'bmp': imagewbmp($thumb); break;
-                case 'gif': imagegif($thumb); break;
-                case 'jpg': imagejpeg($thumb); break;
-                case 'png': imagepng($thumb); break;
+                case 'bmp': imagewbmp($thumb, null); break;
+                case 'gif':
+                    imagegif($thumb, null);
+                break;
+                case 'jpg': imagejpeg($thumb, null, $quality); break;
+
+                case 'png':
+                    $quality = round($quality / 10) - 1;
+                    $quality = $quality < 0 ? 0 :$quality;
+                    imagepng($thumb, null, $quality);
+                    break;
             }
             $thumb = ob_get_contents(); // read from buffer
         ob_end_clean(); // delete buffer
@@ -80,7 +87,7 @@ class F_Tools_Icache {
         if($resource) {
             if(($width != ICACHE_WIDTH_FULL) && ($height != ICACHE_HEIGHT_FULL)) {
 
-                $resized = $this->_imageResize(end($parts), $resource, $width, $height);
+                $resized = $this->_imageResize(end($parts), $resource, $width, $height, $quality);
               
             }
             $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resized);
