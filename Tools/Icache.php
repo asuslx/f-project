@@ -20,26 +20,27 @@ class F_Tools_Icache {
         $this->source = $source;
     }
 
-    private function _imageResize($ext, $image, $width, $height, $quality = 100){
+    private function _imageResize($ext, $image, $width, $height, $quality = 100) {
         // Get original size of image
         $image = imagecreatefromstring($image);
-
-        // Create new image using thumbnail sizes
-        $thumb = imagecreatetruecolor($width,$height);
-
 
         $srcw = imagesx($image);
         $srch = imagesy($image);
 
+        if($width == ICACHE_WIDTH_FULL) $width = $srcw;
+        if($height == ICACHE_HEIGHT_FULL) $height = $srch;
 
+        // Create new image using thumbnail sizes
+        $thumb = imagecreatetruecolor($width,$height);
 
-        if($srcw < $srch) {
-            $srch = $srcw *  $height / $width;
-        } else {
-            $srcw = $srch * $height / $width;
+        if(!($width == $srcw && $height == $srch)) {
+            if(($srcw < $srch)) {
+                $srch = $srcw *  $height / $width;
+            } else {
+                $srcw = $srch * $height / $width;
+            }
         }
-
-       
+        
         // Copy original image to thumbnail
         imagecopyresampled($thumb,$image,0,0,0,0,$width,$height,$srcw,$srch);
         ob_start();
@@ -85,7 +86,7 @@ class F_Tools_Icache {
         $result = false;
         $resized = $resource;
         if($resource) {
-            if(($width != ICACHE_WIDTH_FULL) && ($height != ICACHE_HEIGHT_FULL)) {
+            if(($width != ICACHE_WIDTH_FULL) || ($height != ICACHE_HEIGHT_FULL) || ($quality != 100)) {
 
                 $resized = $this->_imageResize(end($parts), $resource, $width, $height, $quality);
               
