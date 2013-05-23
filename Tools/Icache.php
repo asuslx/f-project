@@ -99,7 +99,24 @@ class F_Tools_Icache {
         }
     }
 
+    private static function clearCache($path, $match) {
+
+        static $deld = 0, $dsize = 0;
+        $dirs = glob($path."*");
+        $files = glob($path.$match);
+        foreach($files as $file) {
+            if(is_file($file)){
+                $dsize += filesize($file);
+                unlink($file);
+                $deld++;
+            }
+        }
+    }
+
     public function putImage($resourceId, $resource) {
+
+        list($id, $ext) = explode('.', $resourceId);
+        self::clearCache($this->config->getCacheDir(), $id."*".$ext);
 
         return $this->source->put($resource, $resourceId);
     }
