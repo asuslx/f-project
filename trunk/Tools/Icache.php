@@ -20,7 +20,7 @@ class F_Tools_Icache {
         $this->source = $source;
     }
 
-    private function _imageResize($ext, $image, $width, $height, $quality = 100) {
+    private function _imageResize($ext, $image, $width, $height, $quality = 100, $smartResize = true) {
         // Get original size of image
         $image = imagecreatefromstring($image);
 
@@ -33,14 +33,15 @@ class F_Tools_Icache {
         // Create new image using thumbnail sizes
         $thumb = imagecreatetruecolor($width,$height);
 
-        if(!($width == $srcw && $height == $srch)) {
-            if(($srcw < $srch)) {
-                $srch = $srcw *  $height / $width;
-            } else {
-                $srcw = $srch * $height / $width;
+        if($smartResize) {
+            if(!($width == $srcw && $height == $srch)) {
+                if(($srcw < $srch)) {
+                    $srch = $srcw *  $height / $width;
+                } else {
+                    $srcw = $srch * $height / $width;
+                }
             }
         }
-        
         // Copy original image to thumbnail
         imagecopyresampled($thumb,$image,0,0,0,0,$width,$height,$srcw,$srch);
         ob_start();
@@ -77,18 +78,25 @@ class F_Tools_Icache {
             $width = $params[0];
             $height = $params[1];
             $quality = $params[2];
+            $ext = end($parts);
         }
 
         $sourceResourceId = reset($parts) . '.' .end($parts);
 
         $resource = $this->source->get($sourceResourceId);
+        $smartResize = true;
+        if(!$resource) {
+            $resource = file_get_contents(F_LOCATION."/F/Tools/Icache/no_photo.jpg");
+            $ext = 'jpg';
+            $smartResize = false;
+        }
 
         $result = false;
         $resized = $resource;
         if($resource) {
             if(($width != ICACHE_WIDTH_FULL) || ($height != ICACHE_HEIGHT_FULL) || ($quality != 100)) {
 
-                $resized = $this->_imageResize(end($parts), $resource, $width, $height, $quality);
+                $resized = $this->_imageResize($ext, $resource, $width, $height, $quality, $smartResize);
               
             }
             $result = file_put_contents($this->config->getCacheDir() . '/' . $resourceId, $resized);
