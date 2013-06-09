@@ -23,7 +23,7 @@ class F_Tools_Icache_Source_Db extends F_Tools_Icache_Source {
     public function get($resourceId) {
 
         list($id, $ext) = explode('.', $resourceId);
-        $rows = F_DB::fetch("select {$this->imageField} from {$this->tableName} where {$this->idField} = %d and {$this->extField} = '%s'", $id, $ext);
+        $rows = F_DB::fetch("select {$this->imageField} from {$this->tableName} where {$this->idField} = %d ", $id);
         if(!empty($rows)) {
             return $rows[0][$this->imageField];
         } else {

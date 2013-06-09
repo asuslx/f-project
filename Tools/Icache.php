@@ -84,6 +84,7 @@ class F_Tools_Icache {
         $sourceResourceId = reset($parts) . '.' .end($parts);
 
         $resource = $this->source->get($sourceResourceId);
+        
         $smartResize = true;
         if(!$resource) {
             $resource = file_get_contents(F_LOCATION."/F/Tools/Icache/no_photo.jpg");
